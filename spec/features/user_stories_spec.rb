@@ -16,4 +16,15 @@ describe 'User Stories' do
     plane = Plane.new
     expect { airport.take_off(plane) }.not_to raise_error
   end
+
+  # As an air traffic controller
+  # To ensure safety
+  # I want to prevent landing when the airport is full
+  it 'raises an error when trying to land a plane at a full airport' do
+    airport = Airport.new(1)
+    plane1 = Plane.new
+    plane2 = Plane.new
+    airport.land(plane1)
+    expect { airport.land(plane2) }.to raise_error "Cannot land plane. Airport already at full capacity"
+  end
 end
