@@ -14,6 +14,24 @@ describe Airport do
     expect(heathrow.capacity).to eq 20
   end
 
+  describe '#hangar' do
+    before do
+      allow(weather).to receive(:stormy?).and_return false
+    end
+    context 'when not stormy' do
+      it 'returns planes at the airport' do
+        airport.land(plane)
+        expect(airport.hangar).to include plane
+      end
+
+      it 'does not return planes that have taken off' do
+        airport.land(plane)
+        airport.take_off(plane)
+        expect(airport.hangar).not_to include plane
+      end
+    end
+  end
+
   describe '#land' do
     context 'when not stormy' do
       before do
@@ -50,7 +68,7 @@ describe Airport do
   end
 
   describe '#take_off' do
-    context 'not stormy' do
+    context 'when not stormy' do
       before do
         allow(weather).to receive(:stormy?).and_return false
       end

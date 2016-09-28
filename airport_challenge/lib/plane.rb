@@ -17,7 +17,7 @@ class Plane
   end
 
   def land(airport)
-    raise "Plane has already landed and cannot land" if !flying?
+    raise "Plane has already landed and cannot land" unless flying?
     @airport = airport
     @flying = false
   end

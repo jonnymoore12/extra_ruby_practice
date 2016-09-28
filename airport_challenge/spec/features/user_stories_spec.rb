@@ -64,6 +64,14 @@ describe 'User Stories' do
       expect(plane.airport).to eq airport
     end
 
+    # As an air traffic controller
+    # So they system is consistent and correctly reports plane status
+    # I want to ensure that a plane that has taken off from an airport is no longer in an airport
+    it 'taking off a plane removes it from that airport' do
+      airport.land(plane)
+      airport.take_off(plane)
+      expect(airport.hangar).not_to include plane
+    end
 
     # As an air traffic controller
     # To ensure safety
