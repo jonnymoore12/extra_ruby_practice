@@ -37,12 +37,41 @@ describe 'User Stories' do
     end
 
     # As an air traffic controller
+    # So the system is consistent and correctly reports plane status
+    # I want to ensure a flying plane cannot take off from or be in an airport
+    it 'flying planes cannot take off' do
+      airport.land(plane)
+      flying_plane = airport.take_off(plane)
+      expect { flying_plane.take_off }.to raise_error "Cannot take off. Plane already flying"
+    end
+
+    it 'flying planes cannot be at an airport' do
+      airport.land(plane)
+      flying_plane = airport.take_off(plane)
+      expect { flying_plane.airport }.to raise_error "Plane cannot be at an airport. Plane already flying"
+    end
+
+    # As an air traffic controller
+    # So the stystem is consistent and correctly reports plane status and location
+    # I want to ensure that a plane that is not flying cannnot land and must not be in an airport.
+    it 'non-flying planes cannot land' do
+      airport.land(plane)
+      expect { plane.land(airport) }.to raise_error "Plane has already landed and cannot land"
+    end
+
+    it 'non-flying planes must be in an airport' do
+      airport.land(plane)
+      expect(plane.airport).to eq airport
+    end
+
+
+    # As an air traffic controller
     # To ensure safety
     # I want to prevent landing when the airport is full
     context 'when airport is full' do
       it 'raises an error when trying to land a plane' do
         Airport::DEFAULT_CAPACITY.times do
-          airport.land(plane)
+          airport.land(Plane.new)
         end
         expect { airport.land(plane) }.to raise_error "Cannot land plane. Airport already at full capacity"
       end

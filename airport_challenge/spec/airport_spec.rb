@@ -2,7 +2,7 @@ require 'airport'
 
 describe Airport do
   subject(:airport) { described_class.new(10, weather) }
-  let(:plane) { double :plane }
+  let(:plane) { double :plane, land: nil, take_off: nil }
   let(:weather) { double :weather }
 
   it 'is initialized with a default capacity of 10' do
@@ -21,7 +21,8 @@ describe Airport do
       end
 
       it 'instructs a plane to land' do
-        expect(airport).to respond_to(:land).with(1).argument
+        expect(plane).to receive(:land)
+        airport.land(plane)
       end
 
       it 'landed planes are stored in the airport hangar' do
