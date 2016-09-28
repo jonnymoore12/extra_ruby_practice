@@ -1,9 +1,12 @@
+require_relative 'weather'
+
 class Airport
 
   attr_reader :capacity
 
-  def initialize(capacity = 10)
+  def initialize(capacity = 10, weather)
     @capacity = capacity
+    @weather = weather
     @hangar = []
   end
 
@@ -24,7 +27,7 @@ private
   end
 
   def stormy?
-    Weather.new.stormy?
+    @weather.stormy?
   end
 
 end
